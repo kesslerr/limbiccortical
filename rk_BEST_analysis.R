@@ -1,105 +1,44 @@
 #install.packages("BEST")
 
 library(BEST)
+library(rjags)
 library(R.matlab)
 library(openxlsx)
 
+plotPath = 'D:/MACS/limbiccortical/plots/BEST/' 
+
 # import posterior distribution
-BMAdata <- readMat('E:/MACS/credible_intervals/BMS_values_for_credible_intervals_p9.mat')
-SUBdata <- read.xlsx('E:/MACS/moebius/macs_dcm_R_table_new_analysis800.xlsx')
+df <- read.xlsx('D:/MACS/limbiccortical/characteristics_sparse.xlsx')
 
 hdiinterval <- 0.95
 
 
 ## Comparison of two groups:
 ## =========================
-#y1 <- c(5.77, 5.33, 4.59, 4.33, 3.66, 4.48)
-#y2 <- c(3.88, 3.55, 3.29, 2.59, 2.33, 3.59)
+# subgroup 1: no risk
+# subgroup 2: genetic risk
+# subgroup 3: environmental risk
+# subgroup 4: both risks
 
-# Analysis 1: HC vs. MDD
-BESTout_ana1 <- BESTmcmc(SUBdata$y [SUBdata$x0 == 1] , SUBdata$y [SUBdata$x1 == 1], numSavedSteps = 500000)
+# Analysis: HC no risk vs. HC genetic risk
+BESTout_ana1 <- BEST::BESTmcmc(y1 = df$inhibition [df$subgroup == "no"] , 
+                               y2 = df$inhibition [df$subgroup == "genetic" & df$subgroup == "both"],
+                               numSavedSteps = 500000)
 summary(BESTout_ana1)
-plotAll(BESTout_ana1, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE, showMode = FALSE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis1_all.png", width = 600, height = 900)
-dev.off()
-
-
-# Analysis 1: HC vs. MDD unmedicated
-BESTout_ana1nomed <- BESTmcmc(SUBdata$y [SUBdata$x0 == 1] , SUBdata$y [SUBdata$x1 == 1 & SUBdata$x20 == 1 & SUBdata$x3 == 0 & SUBdata$x4 == 0], numSavedSteps = 50000)
-summary(BESTout_ana1nomed)
-plotAll(BESTout_ana1nomed, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE, showMode = FALSE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis1_all.png", width = 600, height = 900)
-dev.off()
-
-
-
-# Analysis 2: MDD unmed vs MDD SSRI
-BESTout_ana2_12 <- BESTmcmc(SUBdata$y [SUBdata$x20 == 1 & SUBdata$x2 == 0 & SUBdata$x3 == 0 ] , SUBdata$y [SUBdata$x20 == 1 & SUBdata$x2 == 1 ] )
-summary(BESTout_ana2_12)
-plotAll(BESTout_ana2_12, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis2_12_all.png", width = 600, height = 900)
-dev.off()
-
-# Analysis 2: MDD unmed vs MDD SSNRI
-BESTout_ana2_13 <- BESTmcmc(SUBdata$y [SUBdata$x20 == 1 & SUBdata$x2 == 0 & SUBdata$x3 == 0 ] , SUBdata$y [SUBdata$x20 == 1 & SUBdata$x3 == 1 ] )
-summary(BESTout_ana2_13)
-plotAll(BESTout_ana2_13, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis2_13_all.png", width = 600, height = 900)
-dev.off()
-
-# Analysis 2: MDD unmed vs MDD sero
-BESTout_ana2_14 <- BESTmcmc(SUBdata$y [SUBdata$x20 == 1 & SUBdata$x2 == 0 & SUBdata$x3 == 0 ] , SUBdata$y [SUBdata$x20 == 1 & ( SUBdata$x2 == 1 | SUBdata$x3 == 1 ) ])
-summary(BESTout_ana2_14)
-plotAll(BESTout_ana2_14, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis2_14_all.png", width = 600, height = 900)
-dev.off()
-
-# Analysis 3: HC no risk vs. HC genetic risk
-BESTout_ana3_12 <- BESTmcmc(SUBdata$y [SUBdata$x0 == 1 & SUBdata$x4 == 0 & SUBdata$x5 == 0] , SUBdata$y [SUBdata$x0 == 1 & SUBdata$x4 == 1], numSavedSteps = 500000)
-summary(BESTout_ana3_12)
-plotAll(BESTout_ana3_12, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis3_12_exclusive_all.png", width = 600, height = 900)
+plotAll(BESTout_ana1, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
+dev.copy(png,paste0(c(plotPath,"no_risk_vs_gen_risk.png")), width = 600, height = 900)
 dev.off()
 
 # Analysis 3: HC no risk vs. HC environmental risk
-BESTout_ana3_13 <- BESTmcmc(SUBdata$y [SUBdata$x0 == 1 & SUBdata$x4 == 0 & SUBdata$x5 == 0] , SUBdata$y [SUBdata$x0 == 1 & SUBdata$x5 == 1], numSavedSteps = 500000)
-summary(BESTout_ana3_13)
-plotAll(BESTout_ana3_13, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis3_13_exclusive_all.png", width = 600, height = 900)
-dev.off()
-
-# here with the both risk group treated as a single group and those subjects not included in the first two analyses
-# Analysis 3: HC no risk vs. HC genetic risk
-BESTout_ana3_12 <- BESTmcmc(SUBdata$y [SUBdata$x0 == 1 & SUBdata$x4 == 0 & SUBdata$x5 == 0] , SUBdata$y [SUBdata$x0 == 1 & SUBdata$x4 == 1 & SUBdata$x5 == 0], numSavedSteps = 50000)
-summary(BESTout_ana3_12)
-plotAll(BESTout_ana3_12, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis3_12_all.png", width = 600, height = 900)
-dev.off()
-
-# Analysis 3: HC no risk vs. HC environmental risk
-BESTout_ana3_13 <- BESTmcmc(SUBdata$y [SUBdata$x0 == 1 & SUBdata$x4 == 0 & SUBdata$x5 == 0] , SUBdata$y [SUBdata$x0 == 1 & SUBdata$x4 == 0 & SUBdata$x5 == 1])
-summary(BESTout_ana3_13)
-plotAll(BESTout_ana3_13, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis3_13_all.png", width = 600, height = 900)
-dev.off()
-
-# Analysis 3: HC no risk vs. HC both risks
-BESTout_ana3_14 <- BESTmcmc(SUBdata$y [SUBdata$x1 == 1 & SUBdata$x4 == 0 & SUBdata$x5 == 0] , SUBdata$y [SUBdata$x0 == 1 & SUBdata$x4 == 1 & SUBdata$x5 == 1])
-summary(BESTout_ana3_14)
-plotAll(BESTout_ana3_14, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis3_14_all.png", width = 600, height = 900)
+BESTout_ana2 <- BEST::BESTmcmc(y1 = df$inhibition [df$subgroup == "no"] , 
+                               y2 = df$inhibition [df$subgroup == "environmental" & df$subgroup == "both"],
+                               numSavedSteps = 500000)
+summary(BESTout_ana2)
+plotAll(BESTout_ana2, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
+dev.copy(png,paste0(c(plotPath,"no_risk_vs_env_risk.png")), width = 600, height = 900)
 dev.off()
 
 
-### new Feb 2019: both MDD and HC included in the risk analysis
-
-
-# Analysis 3: HC no risk vs. HC environmental risk
-BESTout_ana4 <- BESTmcmc(SUBdata$y [SUBdata$x0 == 1 & SUBdata$x4 == 0 & SUBdata$x5 == 0] , SUBdata$y [SUBdata$x0 == 1 & SUBdata$x5 == 1], numSavedSteps = 500000)
-summary(BESTout_ana3_13)
-plotAll(BESTout_ana3_13, credMass=hdiinterval, ROPEm=c(-0.1,0.1), ROPEeff=c(-0.1,0.1), compValm=0.5, showCurve=TRUE)
-dev.copy(png,"E:/MACS/credible_intervals/R_proj/p9/best_analysis3_13_exclusive_all.png", width = 600, height = 900)
-dev.off()
 
 
 
@@ -113,8 +52,7 @@ xseq<-seq(-1.0,0.7,.005)
 lwdthin <- 3
 lwdthick <- 5
 
-
-# ana 1
+# no risk vs. gen. risk
 plot.new()
 #png(
 #  "E:/MACS/credible_intervals/R_proj/best_analysis1.png",

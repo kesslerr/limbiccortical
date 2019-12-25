@@ -1,0 +1,293 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+plot the data with ggplot, to be able to plot the different histograms
+
+
+```{r}
+library(ggplot2)
+#install.packages(tidyverse)
+
+#library(tidyverse)
+
+
+```
+
+Analysis 1
+
+```{r} 
+
+# overall properties
+xlim <- c(-0.8,0.8)
+showCurve = FALSE
+cexLab <- 1 #.25
+credMass <- 0.95 # hdi interval
+par(bg=NA) # makes the background transparaent
+
+
+# analysis 1
+
+mu1 = BESTout_ana1$mu1
+mu2 = BESTout_ana1$mu2
+
+
+png("D:/MACS/limbiccortical/plots/BEST/HC.png", width = 350, height = 350)
+par(mfrow)
+histInfo = plotPost( mu1 ,
+                     
+                     xlim=xlim ,
+                     #compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     xlab="coupling strength",
+                     main=paste("no risk") , 
+                     col= "#236800") #"skyblue" ) #0, 103, 37
+histInfo = plotPost( mu2 ,
+                     
+                     xlim=xlim ,
+                     #compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     xlab="coupling strength",
+                     main=paste("genetic risk") , 
+                     col= "#236800") #"skyblue" ) #0, 103, 37
+dev.off() # saving the picture
+
+```
+
+
+```{r} 
+### ANALYSIS 2(a)
+
+
+mu1 = BESTout_ana2_12$mu1
+mu2 = BESTout_ana2_12$mu2
+mu3 = BESTout_ana2_13$mu2
+mu12 = mu1 - mu2
+mu13 = mu1 - mu3
+
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/MDD_unmed.png", width = 350, height = 350)
+histInfo = plotPost( mu1 ,
+                     xlim=xlim ,
+                     #compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     xlab="coupling strength",
+                     main=paste("MDD_unmedicated") , 
+                     col= "#6F0074") 
+dev.off() # saving the picture
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/MDD_SSRI.png", width = 350, height = 350)
+histInfo = plotPost( mu2 ,
+                     xlim=xlim ,
+                     #compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     xlab="coupling strength",
+                     main=paste("MDD_SSRI") , 
+                     col="#AC6285" )
+dev.off() # saving the picture
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/diff_MDD_unmed_MDD_SSRI.png", width = 350, height = 350)
+histInfo = plotPost( mu12 ,
+                     xlim=xlim ,
+                     compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     lty=2,
+                     xlab="coupling strength",
+                     main=paste("diff(MDD_unmedicated,MDD_SSRI)") , 
+                     col="grey" ) #AC6285
+dev.off()
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/MDD_SSNRI.png", width = 350, height = 350)
+histInfo = plotPost( mu3 ,
+                     xlim=xlim ,
+                     #compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     xlab="coupling strength",
+                     main=paste("MDD_SSNRI") , 
+                     col="#C18D82" )
+dev.off() # saving the picture
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/diff_MDD_unmed_MDD_SSNRI.png", width = 350, height = 350)
+histInfo = plotPost( mu13 ,
+                     xlim=xlim ,
+                     compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     lty=2,
+                     xlab="coupling strength",
+                     main=paste("diff(MDD_unmedicated,MDD_SSNRI)") , 
+                     col="grey" ) #C18D82
+dev.off()
+```
+
+
+```{r} 
+
+### ANALYSIS 3 or 2b
+
+
+mu1 = BESTout_ana3_12$mu1
+mu2 = BESTout_ana3_12$mu2
+mu3 = BESTout_ana3_13$mu2
+#mu4 = BESTout_ana3_14$mu2
+mu12 = mu1 - mu2
+mu13 = mu1 - mu3
+mu14 = mu1 - mu4
+
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/HC_no_risk.png", width = 350, height = 350)
+histInfo = plotPost( mu1 ,
+                     xlim=xlim ,
+                     #compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     xlab="coupling strength",
+                     main=paste("HC_no_risk") , 
+                     col= "#236800") # 
+dev.off() # saving the picture
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/HC_genetic_risk.png", width = 350, height = 350)
+histInfo = plotPost( mu2 ,
+                     xlim=xlim ,
+                     #compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     xlab="coupling strength",
+                     main=paste("HC_genetic_risk") , 
+                     col="#D4B24A" )
+dev.off() # saving the picture
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/diff_HC_no_risk_HC_genetic_risk.png", width = 350, height = 350)
+histInfo = plotPost( mu12 ,
+                     xlim=xlim ,
+                     compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     lty=2,
+                     xlab="coupling strength",
+                     main=paste("diff(HC_no_risk,HC_genetic_risk)") , 
+                     col="grey" ) #D4B24A
+dev.off()
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/HC_environmental_risk.png", width = 350, height = 350)
+histInfo = plotPost( mu3 ,
+                     xlim=xlim ,
+                     #compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     xlab="coupling strength",
+                     main=paste("HC_environmental_risk") , 
+                     col="#A86000" )
+dev.off() # saving the picture
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/diff_HC_no_risk_HC_environmental_risk.png", width = 350, height = 350)
+histInfo = plotPost( mu13 ,
+                     xlim=xlim ,
+                     compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     lty=2,
+                     xlab="coupling strength",
+                     main=paste("diff(HC_no_risk,HC_environmental_risk)") , 
+                     col="grey" ) #A86000
+dev.off()
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/HC_both_risks.png", width = 350, height = 350)
+'''
+histInfo = plotPost( mu4 ,
+                     xlim=xlim ,
+                     #compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     xlab="coupling strength",
+                     main=paste("HC_both_risks") , 
+                     col="#A76893" )
+dev.off() # saving the picture
+png("C:/Users/Roman/Dropbox/papers_in_progress/macs_dcm/figures_new/BESTresults/diff_HC_no_risk_HC_both_risks.png", width = 350, height = 350)
+histInfo = plotPost( mu14 ,
+                     xlim=xlim ,
+                     compVal = 0,
+                     credMass = credMass,
+                     cex.lab = cexLab ,
+                     showCurve=showCurve ,
+                     lty=2,
+                     xlab="coupling strength",
+                     main=paste("diff(HC_no_risk,HC_both_risks)") , 
+                     col="grey" ) ##A76893
+dev.off()
+'''
+```
+Analysis 2(a)
+
+
+```{r} 
+
+```
+
+
+
+
+
+```{r}
+# try it with ggplot2
+
+histogram<-cbind(data.frame(mu1),data.frame(mu2),data.frame(mu1-mu2))
+
+ggplot(histogram, aes( xx = cbind(mu1,mu2,mu1-mu2), yy = rep(letters[1:3],each = 100002) )) + 
+    geom_histogram(data = data.frame(mu1), fill = "red", alpha = 0.2) + 
+    geom_histogram(data = data.frame(mu2), fill = "blue", alpha = 0.2) +
+    geom_histogram(data = data.frame(mu1-mu2), fill = "green", alpha = 0.2) #+
+
+```
+
+the following functions plot several histograms or curves in one plot.
+it is retrieved from https://stackoverflow.com/questions/6957549/overlaying-histograms-with-ggplot2-in-r
+and adopted for my purpose
+
+```{r}
+plot_histogram <- function(df, feature) {
+    plt <- ggplot(df, aes(x=eval(parse(text=feature)))) +
+    geom_histogram(aes(y = ..density..), alpha=0.7, fill="#33AADE", color="black") +
+    geom_density(alpha=0.3, fill="red") +
+    geom_vline(aes(xintercept=mean(eval(parse(text=feature)))), color="black", linetype="dashed", size=1) +
+    labs(x=feature, y = "Density")
+    print(plt)
+}
+
+plot_multi_histogram <- function(df, feature, label_column) {
+    plt <- ggplot(df, aes(x=eval(parse(text=feature)), fill=eval(parse(text=label_column)))) +
+    #geom_histogram(alpha=0.7, position="identity", aes(y = ..density..), color="black") +
+    geom_density(alpha=0.5, aes(colour = 'red')) +
+    geom_vline(aes(xintercept=0), color="black", linetype="dashed", size=1) +
+    labs(x=feature, y = "Density")
+    plt + guides(fill=guide_legend(title=label_column))
+}
+```
+
+
+
+```{r}
+# create a DF with many distributions
+a <-data.frame(n=mu1, category=rep('A', 100002))
+b <-data.frame(n=mu2, category=rep('B', 100002))
+c <-data.frame(n=mu1-mu2, category=rep('C', 100002))
+many_distros <- do.call('rbind', list(a,b,c))
+options(repr.plot.width = 20, repr.plot.height = 8)
+plot_multi_histogram(many_distros, 'n', 'category')
+```
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
