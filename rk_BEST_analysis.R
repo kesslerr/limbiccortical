@@ -68,17 +68,21 @@ abline(v = 0, lty = 3)
 histInfo = plotPost( mu2 ,main=paste("genetic risk"),
                      xlim=xlim , credMass = credMass, cex.lab = cexLab, showCurve=showCurve, xlab="coupling strength",
                      col= "#1f78b4")
+abline(v = 0, lty = 3)
 histInfo = plotPost( mudiff12 ,main=paste("difference"),
                      xlim=xlim , credMass = credMass, cex.lab = cexLab, showCurve=showCurve, xlab="coupling strength",
                      col= "#a6cee3")
-#histInfo = plotPost( mu1 ,main=paste("no risk"),
-#                     xlim=xlim , credMass = credMass, cex.lab = cexLab, showCurve=showCurve, xlab="coupling strength",
-#                     col= "#33a02c")
+abline(v = 0, lty = 3)
 frame() # blank plot
+#
 histInfo = plotPost( mu3 ,main=paste("environmental risk"),
                      xlim=xlim , credMass = credMass, cex.lab = cexLab, showCurve=showCurve, xlab="coupling strength",
                      col= "#e31a1c")
+abline(v = 0, lty = 3)
+
 histInfo = plotPost( mudiff13 ,main=paste("difference"),
                      xlim=xlim , credMass = credMass, cex.lab = cexLab, showCurve=showCurve, xlab="coupling strength",
                      col= "#fb9a99")
+abline(v = 0, lty = 3)
+
 dev.off() # saving the picture
