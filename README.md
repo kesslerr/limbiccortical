@@ -1,9 +1,9 @@
 # limbiccortical
-This is a repostitory for the project "limbic-cortical", where we applied the limbic-cortical model of major depression to healthy subjects with particular risks for depression
+This is a repostitory for the project "limbic-cortical", where we applied the limbic-cortical model of major depression to healthy subjects with particular risks for depression.
 
-The final paper as well as supplementary data can be found here: ..link..
+The final paper as well as supplementary data can be found here: https://www.frontiersin.org/articles/10.3389/fnsys.2020.00028/full
 
-This repository contains some analysis scripts, as well as intermediate data.
+This repository contains analysis scripts, as well as intermediate data.
 
 ## Data in this repository
 ### fMRI group level analysis
